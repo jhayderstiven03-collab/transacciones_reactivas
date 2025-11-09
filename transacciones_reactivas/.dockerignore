@@ -35,9 +35,8 @@ temp/
 .gitignore
 
 # Docker
-Dockerfile
-.dockerignore
-docker-compose.yml
+# NOTA: NO ignorar Dockerfile, docker-compose.yml ni .dockerignore
+# Estos archivos son necesarios para construir la imagen
 
 # Documentación
 README.md

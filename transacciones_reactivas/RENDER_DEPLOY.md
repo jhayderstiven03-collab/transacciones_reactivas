@@ -21,7 +21,7 @@ git push origin main
    - **Database**: `banco`
    - **User**: `postgres` (o el que prefieras)
    - **Region**: Elige la región más cercana
-   - **PostgreSQL Version**: 16
+   - **PostgreSQL Version**: 17 (o la versión que prefieras, 17 es la predeterminada y recomendada)
    - **Plan**: Free (para empezar)
 4. Click en "Create Database"
 5. **IMPORTANTE**: Guarda las credenciales que Render te proporciona:
@@ -126,7 +126,66 @@ docker-compose up --build
 ### Error: "Port already in use"
 - Render asigna el puerto automáticamente, asegúrate de usar `${PORT}` en la configuración
 
-### Error: "Build failed"
-- Verifica que el Dockerfile esté en la raíz del proyecto
-- Revisa los logs de build en Render para más detalles
+### Error: "Build failed" o "failed to read dockerfile: open Dockerfile: no such file or directory"
+
+Este error generalmente ocurre por una de estas razones:
+
+1. **El Dockerfile no está en el repositorio Git:**
+   ```bash
+   # Verifica que el Dockerfile esté en Git
+   git status
+   
+   # Si no aparece, agrégalo y haz commit:
+   git add Dockerfile
+   git add docker-compose.yml
+   git commit -m "Agregar Dockerfile y docker-compose.yml"
+   git push origin main
+   ```
+
+2. **Configuración incorrecta en Render:**
+   - **Root Directory**: Debe estar **vacío** (no poner `.` ni `/`)
+   - **Dockerfile Path**: Debe ser exactamente `Dockerfile` (sin ruta, sin extensión)
+   - **Docker Context**: Debe estar **vacío** (no poner `.`)
+
+3. **El Dockerfile está en un subdirectorio:**
+   - Si tu Dockerfile está en otro lugar, ajusta el **Dockerfile Path** en Render
+   - Por ejemplo: si está en `docker/Dockerfile`, pon `docker/Dockerfile` en el campo
+
+4. **Verifica que el Dockerfile esté en la raíz del proyecto:**
+   - El Dockerfile debe estar al mismo nivel que `build.gradle` y `src/`
+   - Revisa los logs de build en Render para más detalles
+
+### Error: "Exited with status 1 while building your code"
+
+Este error indica que el build de Docker está fallando. Posibles causas:
+
+1. **Error en el build de Gradle:**
+   - Revisa los logs completos en Render para ver el error específico
+   - Verifica que todas las dependencias estén correctas en `build.gradle`
+   - Asegúrate de que el código compile localmente primero:
+     ```bash
+     ./gradlew clean build -x test
+     ```
+
+2. **Problemas con el JAR:**
+   - Verifica que Spring Boot esté generando el JAR correctamente
+   - El JAR debe estar en `build/libs/` después del build
+   - Verifica que no haya errores de compilación en el código Java
+
+3. **Problemas de memoria durante el build:**
+   - Render puede tener límites de memoria
+   - Intenta simplificar el Dockerfile o reducir las dependencias
+
+4. **Para depurar:**
+   - Revisa los logs completos en Render (haz clic en "View logs")
+   - Busca líneas que digan "ERROR" o "FAILED"
+   - El error real suele aparecer antes del "Exited with status 1"
+
+5. **Solución temporal - Build local:**
+   ```bash
+   # Construir localmente para ver el error
+   docker build -t test-build .
+   
+   # Si funciona localmente, el problema puede ser específico de Render
+   ```
 
