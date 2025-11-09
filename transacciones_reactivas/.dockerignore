@@ -1,0 +1,53 @@
+# Archivos de build
+build/
+.gradle/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Archivos de IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
+# Archivos de sistema
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales
+tmp/
+temp/
+*.tmp
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Documentación
+README.md
+HELP.md
+*.md
+
+# Archivos de prueba
+src/test/
+
+# Archivos de configuración local
+application-local.properties
+application-dev.properties
+
