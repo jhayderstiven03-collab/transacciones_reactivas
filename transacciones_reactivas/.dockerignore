@@ -43,8 +43,12 @@ README.md
 HELP.md
 *.md
 
-# Archivos de prueba
+# Archivos de prueba (solo tests, NO el directorio src completo)
+# NOTA: src/main/ DEBE estar disponible para el build
+# IMPORTANTE: Solo ignorar src/test/, NO src/ completo
 src/test/
+# Asegurar que src/main/ NO se ignore
+!src/main/
 
 # Archivos de configuración local
 application-local.properties

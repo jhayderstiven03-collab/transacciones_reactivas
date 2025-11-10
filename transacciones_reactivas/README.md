@@ -52,6 +52,7 @@ transacciones_reactivas/
 - `id`: Identificador único de la cuenta
 - `titular`: Nombre del titular de la cuenta
 - `saldo`: Saldo disponible en la cuenta
+- `fechaCreacion`: Fecha y hora de creación de la cuenta
 
 ### Transaccion
 - `id`: Identificador único de la transacción
@@ -83,7 +84,8 @@ CREATE DATABASE banco;
 CREATE TABLE cuentas (
     id BIGSERIAL PRIMARY KEY,
     titular VARCHAR(255) NOT NULL,
-    saldo DOUBLE PRECISION NOT NULL DEFAULT 0.0
+    saldo DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
@@ -130,6 +132,37 @@ La aplicación se iniciará en `http://localhost:8080` (puerto por defecto de Sp
 
 ## 📡 API Endpoints
 
+### Crear Cuenta
+
+**POST** `/api/transacciones/crear-cuenta`
+
+Crea una nueva cuenta bancaria con saldo inicial en 0 y fecha de creación automática.
+
+**Parámetros (query params):**
+- `titular` (String): Nombre del titular de la cuenta (mínimo 2 caracteres)
+
+**Ejemplo de petición:**
+
+```bash
+curl -X POST "http://localhost:8080/api/transacciones/crear-cuenta?titular=Juan%20Pérez"
+```
+
+**Respuestas:**
+
+- `201 Created`: Cuenta creada exitosamente (retorna el objeto Cuenta con id, titular, saldo y fechaCreacion)
+- `400 Bad Request`: Error al crear la cuenta (titular vacío, muy corto, etc.)
+
+**Ejemplo de respuesta exitosa:**
+
+```json
+{
+  "id": 1,
+  "titular": "Juan Pérez",
+  "saldo": 0.0,
+  "fechaCreacion": "2025-11-09T14:30:00"
+}
+```
+
 ### Transferir Fondos
 
 **POST** `/api/transacciones/transferir`
@@ -164,7 +197,8 @@ CREATE DATABASE banco;
 CREATE TABLE IF NOT EXISTS cuentas (
     id BIGSERIAL PRIMARY KEY,
     titular VARCHAR(255) NOT NULL,
-    saldo DOUBLE PRECISION NOT NULL DEFAULT 0.0
+    saldo DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS transacciones (

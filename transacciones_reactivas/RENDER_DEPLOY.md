@@ -40,9 +40,9 @@ git push origin main
    - **Name**: `transacciones-api` (o el nombre que prefieras)
    - **Region**: La misma que elegiste para la base de datos
    - **Branch**: `main` (o la rama que uses)
-   - **Root Directory**: Dejar vacío (o `.` si es necesario)
+   - **Root Directory**: `transacciones_reactivas/transacciones_reactivas` ⚠️ **IMPORTANTE**: Si tu proyecto está en un subdirectorio, pon la ruta aquí
    - **Environment**: `Docker`
-   - **Dockerfile Path**: `Dockerfile` (debe estar en la raíz)
+   - **Dockerfile Path**: `Dockerfile` (debe estar en la raíz del proyecto, no del repo)
    - **Docker Context**: Dejar vacío (o `.`)
 
 ### 4. Configurar Variables de Entorno
@@ -154,6 +154,41 @@ Este error generalmente ocurre por una de estas razones:
 4. **Verifica que el Dockerfile esté en la raíz del proyecto:**
    - El Dockerfile debe estar al mismo nivel que `build.gradle` y `src/`
    - Revisa los logs de build en Render para más detalles
+
+### Error: "failed to solve: failed to compute cache key: "/src": not found"
+
+Este error indica que Docker no puede encontrar el directorio `src` durante el build. Soluciones:
+
+1. **Verificar que `src/` esté en Git:**
+   ```bash
+   git status src/
+   # Si no aparece o dice "untracked", agrégalo:
+   git add src/
+   git commit -m "Agregar directorio src al repositorio"
+   git push origin main
+   ```
+
+2. **Verificar la configuración en Render (SOLUCIÓN PARA TU CASO):**
+   
+   Si tu proyecto está en un subdirectorio como `transacciones_reactivas/transacciones_reactivas/`:
+   
+   - **Root Directory**: Debe ser `transacciones_reactivas/transacciones_reactivas` (la ruta desde la raíz del repo hasta tu proyecto)
+   - **Docker Context**: Debe estar **vacío** (no poner `.`)
+   - **Dockerfile Path**: Debe ser `Dockerfile` (relativo al Root Directory)
+   
+   **Ejemplo de estructura:**
+   ```
+   repo-raiz/
+     └── transacciones_reactivas/
+         └── transacciones_reactivas/  ← Root Directory aquí
+             ├── src/
+             ├── build.gradle
+             └── Dockerfile
+   ```
+
+3. **Verificar que `.dockerignore` no ignore `src/`:**
+   - El `.dockerignore` solo debe ignorar `src/test/`, NO `src/` completo
+   - Asegúrate de que no haya una línea que diga solo `src/` o `src`
 
 ### Error: "Exited with status 1 while building your code"
 
