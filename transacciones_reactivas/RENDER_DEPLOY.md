@@ -50,7 +50,7 @@ git push origin main
 En la sección "Environment" del servicio web, agrega estas variables:
 
 ```
-SPRING_R2DBC_URL=r2dbc:postgresql://[HOST]:[PORT]/banco
+SPRING_R2DBC_URL=postgresql://postgres_admin:r9DTP1csPgpaBssWXYRZ30liv5alGWgT@dpg-d48cljer433s73a0i72g-a/banco_e6a2
 SPRING_R2DBC_USERNAME=[USERNAME]
 SPRING_R2DBC_PASSWORD=[PASSWORD]
 SPRING_SQL_INIT_MODE=always
