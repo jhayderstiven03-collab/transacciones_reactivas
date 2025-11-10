@@ -28,7 +28,8 @@ services:
       dockerfile: Dockerfile
     container_name: transacciones_app
     environment:
-      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/banco
+      ##SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/banco
+      SPRING_R2DBC_URL: postgresql://postgres_admin:r9DTP1csPgpaBssWXYRZ30liv5alGWgT@dpg-d48cljer433s73a0i72g-a/banco_e6a2
       SPRING_R2DBC_USERNAME: postgres
       SPRING_R2DBC_PASSWORD: JhayderSQL
       SPRING_SQL_INIT_MODE: always
